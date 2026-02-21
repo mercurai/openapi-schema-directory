@@ -1,10 +1,7 @@
 import crypto from "node:crypto";
 
-/**
- * @typedef {'debug' | 'info' | 'warn' | 'error'} LogLevel
- */
+export type LogLevel = "debug" | "info" | "warn" | "error";
 
-/** @type {Record<string, string>} */
 export const ERROR_TAXONOMY = {
   VALIDATION_ERROR: "schema validation failed",
   CONTEXT_ERROR: "missing or invalid context",
@@ -12,9 +9,9 @@ export const ERROR_TAXONOMY = {
   NETWORK_ERROR: "network request failed",
   UPSTREAM_ERROR: "external API returned error",
   INTERNAL_ERROR: "unexpected internal error",
-};
+} as const;
 
-/** @typedef {keyof typeof ERROR_TAXONOMY} ErrorType */
+export type ErrorType = keyof typeof ERROR_TAXONOMY;
 
 const REDACTED = "[REDACTED]";
 const SECRET_FIELDS = new Set([
@@ -34,11 +31,7 @@ const SECRET_FIELDS = new Set([
   "bearer_token",
 ]);
 
-/**
- * @param {string} key
- * @returns {boolean}
- */
-function isSecretKey(key) {
+function isSecretKey(key: string): boolean {
   const lower = key.toLowerCase();
   return (
     SECRET_FIELDS.has(lower) ||
@@ -50,40 +43,31 @@ function isSecretKey(key) {
   );
 }
 
-/**
- * @template T
- * @param {T} obj
- * @returns {T}
- */
-export function redact(obj) {
+export function redact<T>(obj: T): T {
   if (obj === null || obj === undefined) return obj;
   if (typeof obj === "string") return obj;
   if (typeof obj === "number" || typeof obj === "boolean") return obj;
 
   if (Array.isArray(obj)) {
-    return obj.map((item) => redact(item));
+    return obj.map((item) => redact(item)) as T;
   }
 
   if (typeof obj === "object") {
-    const redacted = {};
-    for (const [key, value] of Object.entries(obj)) {
+    const redacted: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
       if (isSecretKey(key)) {
         redacted[key] = REDACTED;
       } else {
         redacted[key] = redact(value);
       }
     }
-    return redacted;
+    return redacted as T;
   }
 
   return obj;
 }
 
-/**
- * @param {Error} err
- * @returns {ErrorType}
- */
-function detectErrorType(err) {
+function detectErrorType(err: Error): ErrorType {
   const msg = err.message.toLowerCase();
 
   if (msg.includes("validation") || msg.includes("invalid schema") || msg.includes("openapi")) {
@@ -104,52 +88,35 @@ function detectErrorType(err) {
   return "INTERNAL_ERROR";
 }
 
-/**
- * @returns {string}
- */
-export function createTraceId() {
+export function createTraceId(): string {
   return crypto.randomUUID();
 }
 
-/**
- * @typedef {Object} LogEntry
- * @property {string} ts
- * @property {LogLevel} level
- * @property {string} event
- * @property {string} traceId
- * @property {string} [spanId]
- * @property {Record<string, unknown>} [details]
- * @property {Object} [error]
- * @property {string} error.type
- * @property {string} error.message
- * @property {string} [error.stack]
- */
+export interface LogEntry {
+  ts: string;
+  level: LogLevel;
+  event: string;
+  traceId: string;
+  spanId?: string;
+  details?: Record<string, unknown>;
+  error?: {
+    type: string;
+    message: string;
+    stack?: string;
+  };
+}
 
-/**
- * @typedef {Object} LoggerOptions
- * @property {string} [traceId]
- * @property {Record<string, unknown>} [baseDetails]
- */
-
-/** @type {typeof import('../../openclaw-openapi-tool-bridge/src/lib/logger').Logger} */
 export class Logger {
-  /**
-   * @param {string} [traceId]
-   * @param {Record<string, unknown>} [baseDetails]
-   */
-  constructor(traceId, baseDetails = {}) {
+  private traceId: string;
+  private baseDetails: Record<string, unknown>;
+
+  constructor(traceId?: string, baseDetails: Record<string, unknown> = {}) {
     this.traceId = traceId || createTraceId();
     this.baseDetails = baseDetails;
   }
 
-  /**
-   * @param {LogLevel} level
-   * @param {string} event
-   * @param {{details?: Record<string, unknown>, error?: Error}} [data]
-   */
-  log(level, event, data) {
-    /** @type {LogEntry} */
-    const entry = {
+  private log(level: LogLevel, event: string, data?: { details?: Record<string, unknown>; error?: Error }): void {
+    const entry: LogEntry = {
       ts: new Date().toISOString(),
       level,
       event,
@@ -168,55 +135,32 @@ export class Logger {
     console.log(JSON.stringify(entry));
   }
 
-  /**
-   * @param {string} event
-   * @param {Record<string, unknown>} [details]
-   */
-  debug(event, details) {
+  debug(event: string, details?: Record<string, unknown>): void {
     this.log("debug", event, { details });
   }
 
-  /**
-   * @param {string} event
-   * @param {Record<string, unknown>} [details]
-   */
-  info(event, details) {
+  info(event: string, details?: Record<string, unknown>): void {
     this.log("info", event, { details });
   }
 
-  /**
-   * @param {string} event
-   * @param {Record<string, unknown>} [details]
-   */
-  warn(event, details) {
+  warn(event: string, details?: Record<string, unknown>): void {
     this.log("warn", event, { details });
   }
 
-  /**
-   * @param {string} event
-   * @param {Error} err
-   * @param {Record<string, unknown>} [details]
-   */
-  error(event, err, details) {
+  error(event: string, err: Error, details?: Record<string, unknown>): void {
     this.log("error", event, { details, error: err });
   }
 
-  /**
-   * @param {Partial<LogEntry>} overrides
-   * @returns {Logger}
-   */
-  child(overrides) {
+  child(overrides: Partial<LogEntry>): Logger {
     return new Logger(
       overrides.traceId || this.traceId,
       { ...this.baseDetails, ...overrides.details }
     );
   }
 
-  /** @returns {string} */
-  getTraceId() {
+  getTraceId(): string {
     return this.traceId;
   }
 }
 
-// Default logger instance
 export const logger = new Logger();
