@@ -1,0 +1,20 @@
+{
+  "updatedAt": "2026-02-21T00:57:15.590Z",
+  "count": 2,
+  "entries": [
+    {
+      "id": "httpbin.org",
+      "version": "0.9.2",
+      "title": "httpbin.org",
+      "openapi": "3.0.0",
+      "schemaPath": "schemas/httpbin.org/0.9.2.json"
+    },
+    {
+      "id": "petstore.swagger.io",
+      "version": "1.0.7",
+      "title": "Swagger Petstore",
+      "openapi": "3.0.0",
+      "schemaPath": "schemas/petstore.swagger.io/1.0.7.json"
+    }
+  ]
+}

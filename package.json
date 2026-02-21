@@ -1,0 +1,18 @@
+{
+  "name": "openapi-schema-directory",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "Community-maintained OpenAPI schema directory with automated discovery and refresh.",
+  "scripts": {
+    "discover": "node scripts/discover.mjs",
+    "refresh": "node scripts/refresh.mjs",
+    "build:index": "node scripts/build-index.mjs",
+    "validate": "node scripts/validate.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "oas-normalize": "^11.1.3",
+    "yaml": "^2.6.1"
+  }
+}

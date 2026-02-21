@@ -1,0 +1,5 @@
+[
+  {"id":"petstore.swagger.io","schemaUrl":"https://petstore.swagger.io/v2/swagger.json"},
+  {"id":"httpbin.org","schemaUrl":"https://api.apis.guru/v2/specs/httpbin.org/0.9.2/openapi.json"},
+  {"id":"github.com","schemaUrl":"https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json"}
+]
