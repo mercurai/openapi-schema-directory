@@ -27,3 +27,6 @@ coverage/
 
 # local discovery scratch (keep canonical catalog + schemas tracked)
 catalog/discovered.local.json
+
+# implementation docs (not committed)
+docs/implementation/
