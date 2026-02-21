@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { normalizeAndValidate, SCHEMAS_DIR } from './lib.mjs';
+import { normalizeAndValidate, SCHEMAS_DIR } from './lib.js';
 
 let failed = 0;
 async function walk(dir) {

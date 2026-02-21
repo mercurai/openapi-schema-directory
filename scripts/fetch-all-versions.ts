@@ -1,31 +1,32 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { normalizeAndValidate, writeJson, slug } from './lib.mjs';
+import { normalizeAndValidate, writeJson, slug } from './lib.js';
 
 const indexPath = path.join(process.cwd(), 'sources/apis-guru-index.json');
 const statePath = path.join(process.cwd(), '.cache/fetch-all-versions-state.json');
 const max = Number(process.env.MAX_SCHEMAS || '0'); // 0 = unlimited
 
-const raw = JSON.parse(await fs.readFile(indexPath, 'utf8'));
+const raw = JSON.parse(await fs.readFile(indexPath, 'utf8')) as any;
 let processed = 0;
 let ok = 0;
 let failed = 0;
 
-let state = { done: {} };
+let state = { done: {} as Record<string, any> };
 try { state = JSON.parse(await fs.readFile(statePath, 'utf8')); } catch {}
 
-for (const [id, entry] of Object.entries(raw)) {
-  for (const [ver, meta] of Object.entries(entry.versions || {})) {
+for (const [id, entry] of Object.entries(raw as Record<string, any>)) {
+  const versions = entry.versions || {};
+  for (const [ver, meta] of Object.entries(versions)) {
     const key = `${id}@${ver}`;
     if (state.done[key]) continue;
-    const schemaUrl = meta.openapiUrl || meta.swaggerUrl;
+    const schemaUrl = (meta as any).openapiUrl || (meta as any).swaggerUrl;
     if (!schemaUrl) continue;
 
     if (max && processed >= max) break;
     processed++;
 
     try {
-      const normalized = await normalizeAndValidate(schemaUrl);
+      const normalized: any = await normalizeAndValidate(schemaUrl);
       const out = path.join(process.cwd(), 'schemas', slug(id), `${slug(ver)}.json`);
       await fs.mkdir(path.dirname(out), { recursive: true });
       await fs.writeFile(out, JSON.stringify(normalized, null, 2) + '\n', 'utf8');

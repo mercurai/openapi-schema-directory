@@ -3,7 +3,7 @@ import path from 'node:path';
 
 const repo = 'mercurai/openapi-schema-directory';
 
-async function gh(pathname) {
+async function gh(pathname: string) {
   const r = await fetch(`https://api.github.com${pathname}`, {
     headers: {
       'Accept': 'application/vnd.github+json',
@@ -15,12 +15,12 @@ async function gh(pathname) {
   return r.json();
 }
 
-function extractUrls(text='') {
+function extractUrls(text: string = '') {
   const m = text.match(/https?:\/\/[^\s)\]>]+/g) || [];
   return Array.from(new Set(m));
 }
 
-const issues = await gh(`/repos/${repo}/issues?state=all&per_page=100`);
+const issues: any = await gh(`/repos/${repo}/issues?state=all&per_page=100`);
 const candidates = [];
 
 for (const it of issues) {

@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { CATALOG_DIR, SCHEMAS_DIR, writeJson } from './lib.mjs';
+import { CATALOG_DIR, SCHEMAS_DIR, writeJson } from './lib.js';
 
 const entries = [];
 async function walk(dir) {

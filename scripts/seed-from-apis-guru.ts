@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { writeJson } from './lib.mjs';
+import { writeJson } from './lib.js';
 
 const url = 'https://api.apis.guru/v2/list.json';
 const res = await fetch(url);
@@ -14,9 +14,9 @@ for (const [id, entry] of Object.entries(data)) {
   const versions = {};
   for (const [ver, meta] of Object.entries(entry.versions || {})) {
     versions[ver] = {
-      openapiUrl: meta.openapiUrl || null,
-      swaggerUrl: meta.swaggerUrl || null,
-      info: { title: meta.info?.title || id }
+      openapiUrl: (meta as any).openapiUrl || null,
+      swaggerUrl: (meta as any).swaggerUrl || null,
+      info: { title: (meta as any).info?.title || id }
     };
   }
   index[id] = { id, preferredVersion: preferred, title: entry.info?.title || id, versions };
