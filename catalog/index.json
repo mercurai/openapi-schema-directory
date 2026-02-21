@@ -1,7 +1,77 @@
 {
-  "updatedAt": "2026-02-21T00:57:15.590Z",
-  "count": 2,
+  "updatedAt": "2026-02-21T01:24:11.469Z",
+  "count": 12,
   "entries": [
+    {
+      "id": "1forge.com",
+      "version": "0.0.1",
+      "title": "1Forge Finance APIs",
+      "openapi": "3.0.0",
+      "schemaPath": "schemas/1forge.com/0.0.1.json"
+    },
+    {
+      "id": "1password.com_events",
+      "version": "1.0.0",
+      "title": "Events API",
+      "openapi": "3.0.0",
+      "schemaPath": "schemas/1password.com_events/1.0.0.json"
+    },
+    {
+      "id": "1password.local_connect",
+      "version": "1.5.7",
+      "title": "1Password Connect",
+      "openapi": "3.0.2",
+      "schemaPath": "schemas/1password.local_connect/1.5.7.json"
+    },
+    {
+      "id": "6-dot-authentiqio.appspot.com",
+      "version": "6",
+      "title": "Authentiq API",
+      "openapi": "3.0.0",
+      "schemaPath": "schemas/6-dot-authentiqio.appspot.com/6.json"
+    },
+    {
+      "id": "ably.io_platform",
+      "version": "1.1.0",
+      "title": "Platform API",
+      "openapi": "3.0.1",
+      "schemaPath": "schemas/ably.io_platform/1.1.0.json"
+    },
+    {
+      "id": "ably.net_control",
+      "version": "1.0.14",
+      "title": "Control API v1",
+      "openapi": "3.0.1",
+      "schemaPath": "schemas/ably.net_control/1.0.14.json"
+    },
+    {
+      "id": "abstractapi.com_geolocation",
+      "version": "1.0.0",
+      "title": "IP geolocation API",
+      "openapi": "3.0.1",
+      "schemaPath": "schemas/abstractapi.com_geolocation/1.0.0.json"
+    },
+    {
+      "id": "adafruit.com",
+      "version": "2.0.0",
+      "title": "Adafruit IO REST API",
+      "openapi": "3.0.0",
+      "schemaPath": "schemas/adafruit.com/2.0.0.json"
+    },
+    {
+      "id": "adobe.com_aem",
+      "version": "3.7.1-pre.0",
+      "title": "Adobe Experience Manager (AEM) API",
+      "openapi": "3.0.0",
+      "schemaPath": "schemas/adobe.com_aem/3.7.1-pre.0.json"
+    },
+    {
+      "id": "adyen.com_AccountService",
+      "version": "3",
+      "title": "Account API",
+      "openapi": "3.1.0",
+      "schemaPath": "schemas/adyen.com_AccountService/3.json"
+    },
     {
       "id": "httpbin.org",
       "version": "0.9.2",

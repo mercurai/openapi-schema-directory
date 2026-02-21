@@ -17,11 +17,18 @@ Public, community-maintained OpenAPI schema directory with automated refresh and
 ## Commands
 ```bash
 npm ci
-npm run discover      # probe discovery targets for schema endpoints
-npm run refresh       # fetch + normalize schemas from seeds/discovered
-npm run build:index   # rebuild catalog index from schemas
-npm run validate      # validate all stored schemas
+npm run seed:apis-guru   # import full APIs.guru source index + preferred seed URLs
+npm run discover         # probe discovery targets for schema endpoints
+npm run intake:community # scan repo issues/PRs for schema URLs (requires GITHUB_TOKEN)
+npm run refresh          # fetch + normalize schemas from seeds/discovered/community
+npm run fetch:all-versions # fetch all known versions from APIs.guru index (supports MAX_SCHEMAS)
+npm run build:index      # rebuild catalog index from schemas
+npm run validate         # validate all stored schemas
 ```
+
+### Environment variables
+- `GITHUB_TOKEN` for `intake:community` GitHub API access
+- `MAX_SCHEMAS` for bounded fetch in `fetch:all-versions` (e.g. `MAX_SCHEMAS=200`)
 
 ## Automation
 GitHub Action `.github/workflows/refresh-catalog.yml` runs every 6 hours to:

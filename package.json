@@ -5,8 +5,11 @@
   "type": "module",
   "description": "Community-maintained OpenAPI schema directory with automated discovery and refresh.",
   "scripts": {
+    "seed:apis-guru": "node scripts/seed-from-apis-guru.mjs",
     "discover": "node scripts/discover.mjs",
     "refresh": "node scripts/refresh.mjs",
+    "fetch:all-versions": "node scripts/fetch-all-versions.mjs",
+    "intake:community": "node scripts/intake-community.mjs",
     "build:index": "node scripts/build-index.mjs",
     "validate": "node scripts/validate.mjs",
     "test": "node --test"

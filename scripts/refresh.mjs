@@ -4,8 +4,11 @@ import { ensureDirs, loadJson, normalizeAndValidate, writeJson, slug, SCHEMAS_DI
 
 await ensureDirs();
 const seeds = await loadJson(path.join(process.cwd(), 'sources/seeds.json'), []);
+const guruSeeds = await loadJson(path.join(process.cwd(), 'sources/seeds.apis-guru.json'), []);
 const discovered = (await loadJson(path.join(CATALOG_DIR, 'discovered.json'), { items: [] }))?.items || [];
-const merged = [...seeds, ...discovered].reduce((acc, cur) => {
+const community = (await loadJson(path.join(process.cwd(), 'sources/community-candidates.json'), { items: [] }))?.items || [];
+
+const merged = [...seeds, ...guruSeeds, ...discovered, ...community].reduce((acc, cur) => {
   if (!acc.find(x => x.id === cur.id)) acc.push(cur);
   return acc;
 }, []);
