@@ -1,0 +1,42 @@
+name: Refresh Schemas
+
+on:
+  schedule:
+    # Run daily at midnight UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # Manual trigger
+  push:
+    branches: [main]
+    paths:
+      - 'sources/**'
+      - 'scripts/**'
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Run refresh
+        run: npm run refresh
+      
+      - name: Commit changes
+        run: |
+          git config --local user.email "openclaw@mercurai.agent"
+          git config --local user.name "OpenClaw Bot"
+          git add -A
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: refresh schemas"
+            git push
+          fi
