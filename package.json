@@ -14,7 +14,8 @@
     "validate": "ts-node scripts/validate.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --test",
-    "build:bridge": "ts-node scripts/build-bridge-catalog.ts"
+    "build:bridge": "ts-node scripts/build-bridge-catalog.ts",
+    "build:search": "ts-node scripts/build-search-index.ts"
   },
   "dependencies": {
     "oas-normalize": "^11.1.3",
